@@ -9,9 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@badrap/bar-of-progress": "^0.2.2",
     "@heroicons/react": "^2.0.18",
+    "date-fns": "^3.0.6",
     "next": "14.0.4",
     "react": "^18",
+    "react-date-range": "^2.0.0-alpha.4",
     "react-dom": "^18",
     "tailwind-scrollbar-hide": "^1.1.7"
   },

@@ -1,10 +1,46 @@
 import Image from "next/image";
+import { useState } from "react";
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
+import { DateRangePicker } from "react-date-range";
+import { useRouter } from "next/router";
 // import { SearchIcon } from "@heroicons/react/solid";
-function Header() {
+function Header({placeholder}) {
+  const [searchInput, setSearchInput] = useState("");
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [numberOfGuests, setNumberOfGuests] = useState(1);
+  const router = useRouter();
+
+  const selectionRange = {
+    startDate: startDate,
+    endDate: endDate,
+    key: "selection",
+  };
+
+  const handleSelect = (ranges) => {
+    setStartDate(ranges.selection.startDate);
+    setEndDate(ranges.selection.endDate);
+  };
+
+  const resetInput = () =>{
+    setSearchInput("")
+  }
+  const search = () =>{
+    router.push({
+      pathname:'/search',
+      query:{
+        location:searchInput,
+        startDate:startDate.toISOString(),
+        endDate:endDate.toISOString(),
+        numberOfGuests
+      }
+    })
+  }
   return (
     <header className="sticky top-0 z-50 grid grid-cols-3 bg-white shadow-md md:p-5">
       {/* left section */}
-      <div className="relative flex items-center h-10 cursor-pointer my-auto">
+      <div onClick={()=> router.push("/")} className="relative flex items-center h-10 cursor-pointer my-auto">
         <Image
           src="https://links.papareact.com/qd3"
           fill={true}
@@ -14,9 +50,11 @@ function Header() {
       {/* middle section */}
       <div className="flex items-center  rounded-full py-2 md:border-2 md:shadow-sm">
         <input
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
           className="pl-5 bg-transparent outline-none flex-grow text-sm text-gray-600 placeholder-gray-400"
           type="text"
-          placeholder="start your search"
+          placeholder={ placeholder || 'start your search'}
         />
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -72,6 +110,47 @@ function Header() {
           </svg>
         </div>
       </div>
+
+      {searchInput && (
+        <div className="flex flex-col mx-auto col-span-3">
+          <DateRangePicker
+            ranges={[selectionRange]}
+            minDate={new Date()}
+            rangeColors={["#FD5861"]}
+            onChange={handleSelect}
+          />
+          <div className="flex items-center border-b mb-4">
+            <h2 className="text-2xl flex-grow font-semibold">
+              Number of guests
+            </h2>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"
+              />
+            </svg>
+            <input
+              value={numberOfGuests}
+              type="number"
+              min={1}
+              className="w-12 pl-2 text-lg outline-none text-400"
+              onChange={(e) => setNumberOfGuests(e.target.value)}
+            />
+          </div>
+          <div className="flex">
+            <button onClick={resetInput} className="flex-grow text-gray-500">Cancel</button>
+            <button onClick={search} className="flex-grow text-red-500">Search</button>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
