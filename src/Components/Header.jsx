@@ -45,6 +45,7 @@ function Header({placeholder}) {
           src="https://links.papareact.com/qd3"
           fill={true}
           className="object-contain object-left"
+          alt="airbnb logo"
         />
       </div>
       {/* middle section */}
