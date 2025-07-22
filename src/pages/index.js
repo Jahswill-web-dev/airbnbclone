@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Head from "next/head";
-import Header from "@/Components/Header";
-import Banner from "@/Components/Banner";
-import SmallCard from "@/Components/SmallCard";
-import MediumCard from "@/Components/MediumCard";
-import LargeCard from "@/Components/LargeCard";
-import Footer from "@/Components/Footer";
+import Header from "@/components/Header";
+import Banner from "@/components/Banner";
+import SmallCard from "@/components/SmallCard";
+import MediumCard from "@/components/MediumCard";
+import LargeCard from "@/components/LargeCard";
+import Footer from "@/components/Footer";
 
 export default function Home({ exploreData, cardsData }) {
   return (
